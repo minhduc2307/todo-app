@@ -12,6 +12,7 @@ const Sidebar = (props) => {
         props.handleTodoItemChange(newTodo);
         props.setShowSidebar(false);
     };
+
     return (
         <div className="sidebar">
             <form className="sb-form">
