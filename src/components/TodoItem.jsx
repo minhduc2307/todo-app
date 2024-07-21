@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 
 const TodoItem = (props) => {
     return (
@@ -23,4 +23,12 @@ const TodoItem = (props) => {
     );
 };
 
+TodoItem.propTypes = {
+    name: PropTypes.string,
+    id: PropTypes.string,
+    isImportant: PropTypes.bool,
+    isCompleted: PropTypes.bool,
+    handleTodoItemClick: PropTypes.func,
+    handleCompleteCheckboxChange: PropTypes.func,
+};
 export default TodoItem;
