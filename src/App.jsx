@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import "./App.css";
 import TodoItem from "./components/TodoItem";
 import Sidebar from "./components/Sidebar";
@@ -35,6 +35,8 @@ function App() {
 
     const [selectedFilterId, setSelectedFilterId] = useState("all"); //Lifting State Up
 
+    const [searchText, setSearchText] = useState("");
+
     const activeTodoItem = todoList.find((todo) => todo.id === activeTodoItemId);
 
     const handleCompleteCheckboxChange = (todoId) => {
@@ -64,8 +66,11 @@ function App() {
 
     const inputRef = useRef(); //Thao tac Dom element
 
-    const filteredTodos = todoList
-        .filter((todo) => {
+    const filteredTodos = useMemo(() => {
+        return todoList.filter((todo) => {
+            if (!todo.name.includes(searchText)) {
+                return false;
+            }
             switch (selectedFilterId) {
                 case "all":
                     return true;
@@ -78,26 +83,16 @@ function App() {
                 default:
                     return true;
             }
-        })
-        .map((todo) => {
-            return (
-                <TodoItem
-                    id={todo.id}
-                    name={todo.name}
-                    key={todo.id}
-                    isImportant={todo.isImportant}
-                    isCompleted={todo.isCompleted}
-                    handleCompleteCheckboxChange={handleCompleteCheckboxChange}
-                    handleTodoItemClick={handleTodoItemClick}
-                />
-            );
         });
+    }, [todoList, selectedFilterId, searchText]);
 
     return (
         <div className="container">
             <FilterPanel
                 selectedFilterId={selectedFilterId}
                 setSelectedFilterId={setSelectedFilterId}
+                searchText={searchText}
+                setSearchText={setSearchText}
                 todoList={todoList}
             />
             <div className="main-content">
@@ -124,7 +119,21 @@ function App() {
                         }
                     }}
                 />
-                <div>{filteredTodos}</div>
+                <div>
+                    {filteredTodos.map((todo) => {
+                        return (
+                            <TodoItem
+                                id={todo.id}
+                                name={todo.name}
+                                key={todo.id}
+                                isImportant={todo.isImportant}
+                                isCompleted={todo.isCompleted}
+                                handleCompleteCheckboxChange={handleCompleteCheckboxChange}
+                                handleTodoItemClick={handleTodoItemClick}
+                            />
+                        );
+                    })}
+                </div>
                 {showSidebar && (
                     <Sidebar
                         todoItem={activeTodoItem}
