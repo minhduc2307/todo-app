@@ -1,6 +1,8 @@
 import { useMemo } from "react";
 import "./FilterPanel.css";
 import PropTypes from "prop-types";
+import CategoryList from "./CategoryList";
+import FilterList from "./FilterList";
 
 const FILTER_ITEMS = [
     {
@@ -55,23 +57,15 @@ const FilterPanel = ({ selectedFilterId, setSelectedFilterId, todoList, searchTe
                     setSearchText(e.target.value);
                 }}
             />
-            <div className="filter-container">
-                {FILTER_ITEMS.map((filterItem) => {
-                    return (
-                        <div
-                            key={filterItem.id}
-                            className={`filter-item ${filterItem.id === selectedFilterId ? "selected" : ""}`}
-                            onClick={() => setSelectedFilterId(filterItem.id)}
-                        >
-                            <div className="filter-name">
-                                <img src={filterItem.iconPath} alt="" />
-                                <p>{filterItem.label}</p>
-                            </div>
-                            <p>{countByFilterType[filterItem.id]}</p>
-                        </div>
-                    );
-                })}
-            </div>
+
+            <FilterList
+                FILTER_ITEMS={FILTER_ITEMS}
+                selectedFilterId={selectedFilterId}
+                setSelectedFilterId={setSelectedFilterId}
+                countByFilterType={countByFilterType}
+            />
+
+            <CategoryList />
         </div>
     );
 };

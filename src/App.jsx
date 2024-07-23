@@ -12,6 +12,7 @@ function App() {
             isImportant: true,
             isCompleted: false,
             isDeleted: false,
+            category: "personal",
         },
         {
             id: "2",
@@ -19,6 +20,7 @@ function App() {
             isImportant: false,
             isCompleted: true,
             isDeleted: false,
+            category: "personal",
         },
         {
             id: "3",
@@ -26,6 +28,7 @@ function App() {
             isImportant: true,
             isCompleted: true,
             isDeleted: false,
+            category: "travel",
         },
     ]);
 
@@ -113,6 +116,7 @@ function App() {
                                     isCompleted: false,
                                     isImportant: false,
                                     isDeleted: false,
+                                    category: "personal",
                                 },
                             ]);
                             inputRef.current.value = "";
