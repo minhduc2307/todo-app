@@ -8,22 +8,22 @@ const FILTER_ITEMS = [
     {
         id: "all",
         label: "All",
-        iconPath: "./public/inbox.png",
+        iconPath: "/inbox.png",
     },
     {
         id: "important",
         label: "Important",
-        iconPath: "./public/flag.png",
+        iconPath: "/flag.png",
     },
     {
         id: "completed",
         label: "Completed",
-        iconPath: "./public/check.png",
+        iconPath: "/check.png",
     },
     {
         id: "deleted",
         label: "Deleted",
-        iconPath: "./public/delete.png",
+        iconPath: "/delete.png",
     },
 ];
 
@@ -65,7 +65,7 @@ const FilterPanel = ({ selectedFilterId, setSelectedFilterId, todoList, searchTe
                 countByFilterType={countByFilterType}
             />
 
-            <CategoryList />
+            <CategoryList todoList={todoList} />
         </div>
     );
 };
