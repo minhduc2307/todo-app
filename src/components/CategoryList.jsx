@@ -18,7 +18,14 @@ const CategoryList = () => {
 
     return (
         <div>
-            <h2 className="category__heading">Categories</h2>
+            <h2
+                className="category__heading"
+                onClick={() => {
+                    setSelectedCategoryId("");
+                }}
+            >
+                Categories
+            </h2>
             <div>
                 {CATEGORY_ITEMS.map((category) => {
                     return (

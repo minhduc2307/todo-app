@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, useState } from "react";
 import "./App.css";
 import "./css/responsive.css";
 import TodoItem from "./components/TodoItem";
@@ -20,6 +20,8 @@ function App() {
     } = useAppContext();
 
     const activeTodoItem = todoList.find((todo) => todo.id === activeTodoItemId);
+
+    const [value, setValue] = useState("");
 
     const inputRef = useRef(); //Thao tac Dom element
 
@@ -50,35 +52,49 @@ function App() {
         });
     }, [todoList, selectedFilterId, searchText, selectedCategoryId]);
 
+    const handleAddTodoItem = () => {
+        let newValue = value.trim();
+        setTodoList([
+            ...todoList,
+            {
+                id: crypto.randomUUID(),
+                name: newValue,
+                isCompleted: false,
+                isImportant: false,
+                isDeleted: false,
+                category: "personal",
+            },
+        ]);
+        inputRef.current.value = "";
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter") {
+            handleAddTodoItem();
+        }
+    };
+
     return (
         <div className="container">
             <FilterPanel />
             <div className="main-content">
                 <h1 className="heading">TODO List</h1>
-                <input
-                    ref={inputRef}
-                    type="text"
-                    name="add-new-task"
-                    placeholder="Add new task"
-                    className="task-input"
-                    onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                            const value = e.target.value;
-                            setTodoList([
-                                ...todoList,
-                                {
-                                    id: crypto.randomUUID(),
-                                    name: value,
-                                    isCompleted: false,
-                                    isImportant: false,
-                                    isDeleted: false,
-                                    category: "personal",
-                                },
-                            ]);
-                            inputRef.current.value = "";
-                        }
-                    }}
-                />
+                <div className="add-todo-item-wrap">
+                    <input
+                        ref={inputRef}
+                        type="text"
+                        name="add-new-task"
+                        placeholder="Add new task"
+                        className="task-input"
+                        onKeyDown={handleKeyDown}
+                        onChange={(e) => {
+                            setValue(e.target.value);
+                        }}
+                    />
+                    <button className="add-todo-item-btn" onClick={handleAddTodoItem}>
+                        Add
+                    </button>
+                </div>
                 <ul className="todo-list-item">
                     {filteredTodos.map((todo) => {
                         return (

@@ -52,8 +52,6 @@ const AppProvider = ({ children }) => {
 
     const [deletedTodoId, setDeletedTodoId] = useState();
 
-    const [textDecoration, setTextDecoration] = useState(false);
-
     const handleTodoItemClick = (todoId) => {
         setShowSidebar(true);
         setActiveTodoItemId(todoId);
@@ -113,8 +111,6 @@ const AppProvider = ({ children }) => {
                 deletedTodoId,
                 setDeletedTodoId,
                 handleDeleteItem,
-                textDecoration,
-                setTextDecoration,
             }}
         >
             {children}

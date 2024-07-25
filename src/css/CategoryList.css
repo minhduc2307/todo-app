@@ -1,8 +1,9 @@
 .category__heading {
-    margin: 40px 0 5px;
+    margin: 40px 0 6px;
     font-size: 20px;
     font-weight: 500;
     color: #adadad;
+    cursor: pointer;
 }
 
 .category-item {

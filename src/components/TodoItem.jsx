@@ -3,23 +3,20 @@ import { useAppContext } from "../context/AppProvider";
 import "../css/TodoItem.css";
 
 const TodoItem = (props) => {
-    const {
-        handleTodoItemClick,
-        handleCompleteCheckboxChange,
-        setShowModal,
-        setDeletedTodoId,
-        selectedFilterId,
-        textDecoration,
-        setTextDecoration,
-    } = useAppContext();
+    const { handleTodoItemClick, handleCompleteCheckboxChange, setShowModal, setDeletedTodoId, selectedFilterId } =
+        useAppContext();
+
     let isShow = true;
+    let hasTextDecoration = false;
+
     if (selectedFilterId === "deleted") {
         isShow = false;
-        setTextDecoration(true);
+        hasTextDecoration = true;
     }
+
     return (
         <li
-            className={`todo-item ${textDecoration ? "todo-item--deleted" : ""}`}
+            className={`todo-item ${hasTextDecoration ? "todo-item--deleted" : ""}`}
             onClick={() => handleTodoItemClick(props.id)}
         >
             <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
