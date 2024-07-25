@@ -1,33 +1,13 @@
 import { useMemo } from "react";
-import "./FilterPanel.css";
 import PropTypes from "prop-types";
+import "../css/FilterPanel.css";
 import CategoryList from "./CategoryList";
 import FilterList from "./FilterList";
+import { useAppContext } from "../context/AppProvider";
 
-const FILTER_ITEMS = [
-    {
-        id: "all",
-        label: "All",
-        iconPath: "/inbox.png",
-    },
-    {
-        id: "important",
-        label: "Important",
-        iconPath: "/flag.png",
-    },
-    {
-        id: "completed",
-        label: "Completed",
-        iconPath: "/check.png",
-    },
-    {
-        id: "deleted",
-        label: "Deleted",
-        iconPath: "/delete.png",
-    },
-];
+const FilterPanel = () => {
+    const { todoList, searchText, setSearchText } = useAppContext();
 
-const FilterPanel = ({ selectedFilterId, setSelectedFilterId, todoList, searchText, setSearchText }) => {
     const countByFilterType = useMemo(() => {
         return todoList.reduce(
             (acc, curr) => {
@@ -39,7 +19,7 @@ const FilterPanel = ({ selectedFilterId, setSelectedFilterId, todoList, searchTe
                     newAcc = { ...newAcc, important: newAcc.important + 1 };
                 }
                 if (curr.isDeleted) {
-                    newAcc = { ...newAcc, deleted: newAcc.deleted + 1 };
+                    newAcc = { ...newAcc, all: newAcc.all - 1, deleted: newAcc.deleted + 1 };
                 }
                 return newAcc;
             },
@@ -49,23 +29,22 @@ const FilterPanel = ({ selectedFilterId, setSelectedFilterId, todoList, searchTe
 
     return (
         <div className="filter-panel">
-            <input
-                name="search-text"
-                placeholder="Search"
-                value={searchText}
-                onChange={(e) => {
-                    setSearchText(e.target.value);
-                }}
-            />
+            <div className="filter-panel__search">
+                <input
+                    name="search-text"
+                    placeholder="Search"
+                    className="filter-panel__search-input"
+                    value={searchText}
+                    onChange={(e) => {
+                        setSearchText(e.target.value);
+                    }}
+                />
+                <img src="./search.svg" alt="" className="filter-panel__search-icon" />
+            </div>
 
-            <FilterList
-                FILTER_ITEMS={FILTER_ITEMS}
-                selectedFilterId={selectedFilterId}
-                setSelectedFilterId={setSelectedFilterId}
-                countByFilterType={countByFilterType}
-            />
+            <FilterList countByFilterType={countByFilterType} />
 
-            <CategoryList todoList={todoList} />
+            <CategoryList />
         </div>
     );
 };

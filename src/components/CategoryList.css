@@ -1,9 +1,0 @@
-.category-item {
-    display: flex;
-    justify-content: space-between;
-}
-
-.category-item.selected {
-    background: #0f548c;
-    color: #fff;
-}

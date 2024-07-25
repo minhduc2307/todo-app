@@ -1,6 +1,9 @@
 import PropTypes from "prop-types";
+import { FILTER_ITEMS } from "../constants.js";
+import { useAppContext } from "../context/AppProvider.jsx";
 
-const FilterList = ({ FILTER_ITEMS, selectedFilterId, setSelectedFilterId, countByFilterType }) => {
+const FilterList = ({ countByFilterType }) => {
+    const { selectedFilterId, setSelectedFilterId } = useAppContext();
     return (
         <div className="filter-container">
             {FILTER_ITEMS.map((filterItem) => {
@@ -12,9 +15,9 @@ const FilterList = ({ FILTER_ITEMS, selectedFilterId, setSelectedFilterId, count
                     >
                         <div className="filter-name">
                             <img src={filterItem.iconPath} alt="" />
-                            <p>{filterItem.label}</p>
+                            <p className="filter-item__label">{filterItem.label}</p>
                         </div>
-                        <p>{countByFilterType[filterItem.id]}</p>
+                        <p className="filter-item__num">{countByFilterType[filterItem.id]}</p>
                     </div>
                 );
             })}

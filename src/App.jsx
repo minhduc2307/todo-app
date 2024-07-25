@@ -1,74 +1,25 @@
-import { useContext, useMemo, useRef, useState } from "react";
+import { useMemo, useRef } from "react";
 import "./App.css";
+import "./css/responsive.css";
 import TodoItem from "./components/TodoItem";
 import Sidebar from "./components/Sidebar";
 import FilterPanel from "./components/FilterPanel";
-import { AppContext } from "./Context/AppProvider";
+import { useAppContext } from "./context/AppProvider";
+import Modal from "./components/Modal";
 
 function App() {
-    const [todoList, setTodoList] = useState([
-        {
-            id: "1",
-            name: "Đi học thêm",
-            isImportant: true,
-            isCompleted: false,
-            isDeleted: false,
-            category: "personal",
-        },
-        {
-            id: "2",
-            name: "Đi tập gym",
-            isImportant: false,
-            isCompleted: true,
-            isDeleted: false,
-            category: "personal",
-        },
-        {
-            id: "3",
-            name: "Đọc sách",
-            isImportant: true,
-            isCompleted: true,
-            isDeleted: false,
-            category: "travel",
-        },
-    ]);
-
-    const [activeTodoItemId, setActiveTodoItemId] = useState();
-
-    const [showSidebar, setShowSidebar] = useState(false);
-
-    const [selectedFilterId, setSelectedFilterId] = useState("all"); //Lifting State Up
-
-    const [searchText, setSearchText] = useState("");
-
-    const { selectedCategoryId } = useContext(AppContext);
+    const {
+        selectedCategoryId,
+        todoList,
+        setTodoList,
+        selectedFilterId,
+        searchText,
+        activeTodoItemId,
+        showSidebar,
+        showModal,
+    } = useAppContext();
 
     const activeTodoItem = todoList.find((todo) => todo.id === activeTodoItemId);
-
-    const handleCompleteCheckboxChange = (todoId) => {
-        const newTodoList = todoList.map((todo) => {
-            if (todo.id === todoId) {
-                return { ...todo, isCompleted: !todo.isCompleted };
-            }
-            return todo;
-        });
-        setTodoList(newTodoList);
-    };
-
-    const handleTodoItemClick = (todoId) => {
-        setShowSidebar(true);
-        setActiveTodoItemId(todoId);
-    };
-
-    const handleTodoItemChange = (newTodo) => {
-        const newTodoList = todoList.map((todo) => {
-            if (todo.id === newTodo.id) {
-                return newTodo;
-            }
-            return todo;
-        });
-        setTodoList(newTodoList);
-    };
 
     const inputRef = useRef(); //Thao tac Dom element
 
@@ -83,7 +34,10 @@ function App() {
             }
             switch (selectedFilterId) {
                 case "all":
-                    return true;
+                    if (!todo.isDeleted) {
+                        return true;
+                    }
+                    break;
                 case "important":
                     return todo.isImportant;
                 case "completed":
@@ -98,14 +52,9 @@ function App() {
 
     return (
         <div className="container">
-            <FilterPanel
-                selectedFilterId={selectedFilterId}
-                setSelectedFilterId={setSelectedFilterId}
-                searchText={searchText}
-                setSearchText={setSearchText}
-                todoList={todoList}
-            />
+            <FilterPanel />
             <div className="main-content">
+                <h1 className="heading">TODO List</h1>
                 <input
                     ref={inputRef}
                     type="text"
@@ -130,7 +79,7 @@ function App() {
                         }
                     }}
                 />
-                <div>
+                <ul className="todo-list-item">
                     {filteredTodos.map((todo) => {
                         return (
                             <TodoItem
@@ -139,21 +88,13 @@ function App() {
                                 key={todo.id}
                                 isImportant={todo.isImportant}
                                 isCompleted={todo.isCompleted}
-                                handleCompleteCheckboxChange={handleCompleteCheckboxChange}
-                                handleTodoItemClick={handleTodoItemClick}
                             />
                         );
                     })}
-                </div>
-                {showSidebar && (
-                    <Sidebar
-                        todoItem={activeTodoItem}
-                        handleTodoItemChange={handleTodoItemChange}
-                        key={activeTodoItemId}
-                        setShowSidebar={setShowSidebar}
-                    />
-                )}
+                </ul>
+                {showSidebar && <Sidebar todoItem={activeTodoItem} key={activeTodoItemId} />}
             </div>
+            {showModal && <Modal />}
         </div>
     );
 }
