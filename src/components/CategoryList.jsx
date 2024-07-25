@@ -32,7 +32,11 @@ const CategoryList = () => {
                             }}
                         >
                             <div className="category-left">
-                                <img src="/folder.svg" alt="" className="category-icon" />
+                                <img
+                                    src="https://minhduc2307.github.io/todo-app/folder.svg"
+                                    alt=""
+                                    className="category-icon"
+                                />
                                 <p className="category-name">{category.label}</p>
                             </div>
                             <span className="category-num">{countByCategory[category.id]}</span>

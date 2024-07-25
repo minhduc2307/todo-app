@@ -39,7 +39,11 @@ const FilterPanel = () => {
                         setSearchText(e.target.value);
                     }}
                 />
-                <img src="./search.svg" alt="" className="filter-panel__search-icon" />
+                <img
+                    src="https://minhduc2307.github.io/todo-app/search.svg"
+                    alt=""
+                    className="filter-panel__search-icon"
+                />
             </div>
 
             <FilterList countByFilterType={countByFilterType} />

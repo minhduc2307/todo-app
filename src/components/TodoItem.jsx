@@ -47,7 +47,7 @@ const TodoItem = (props) => {
                         setShowModal(true);
                     }}
                 >
-                    <img src="./trash.svg" alt="" />
+                    <img src="https://minhduc2307.github.io/todo-app/trash.svg" alt="" />
                     Delete
                 </button>
             )}
